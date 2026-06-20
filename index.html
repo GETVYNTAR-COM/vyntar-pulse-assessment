@@ -6,8 +6,8 @@
 <title>Workforce Pressure Visibility Assessment | VYNTAR Pulse</title>
 <meta name="description" content="Discover the hidden organisational friction reducing performance, increasing risk, and quietly costing your business money. Built on the HSE Management Standards.">
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" defer></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2" defer></script>
 
 <style>
   :root{
@@ -447,6 +447,7 @@
 </div>
 
 <script>
+document.addEventListener('DOMContentLoaded', function(){
 /* =========================================================
    CONFIG — replace these two with your new Supabase project
    ========================================================= */
@@ -455,8 +456,10 @@ const SUPABASE_ANON_KEY = 'sb_publishable_-xQ6ri2QO25FVsko6dln6A_ASexaCWw';
 
 let supabase = null;
 try{
-  if(SUPABASE_URL.startsWith('https://') && SUPABASE_ANON_KEY.length > 10){
+  if(SUPABASE_URL.startsWith('https://') && SUPABASE_ANON_KEY.length > 10 && window.supabase && typeof window.supabase.createClient === 'function'){
     supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  }else{
+    console.warn('Supabase client library not ready yet — leads will not be saved this session.');
   }
 }catch(e){ console.warn('Supabase not configured yet', e); }
 
@@ -943,6 +946,8 @@ function colorForBand(key){
   if(key==='amber') return '#FFB020';
   return '#FF4D5E';
 }
+
+}); // end DOMContentLoaded
 </script>
 
 </body>
